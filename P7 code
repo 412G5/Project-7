@@ -1,0 +1,46 @@
+import requests
+import json
+
+# URL of API
+base_url = "whatever our url is lmao"
+
+#  function to make GET requests and test endpoints
+def test_get_endpoint(endpoint):
+    url = f"{base_url}/{endpoint}"
+    response = requests.get(url)
+
+    # check if ststus code = 200
+    assert response.status_code == 200, f"Failed to get {endpoint}"
+
+    try:
+        data = response.json()
+        # Add checks for the JSON data here
+    except json.JSONDecodeError:
+        pass
+
+#  function to make POST requests and test endpoints
+def test_post_endpoint(endpoint, data):
+    url = f"{base_url}/{endpoint}"
+    headers = {'Content-Type': 'application/json'}
+    response = requests.post(url, data=json.dumps(data), headers=headers)
+
+    # check if the status code = 201 or 200
+    assert response.status_code in (201, 200), f"Failed to post to {endpoint}"
+
+
+
+# a function to run all tests
+def run_tests():
+    try:
+        test_get_endpoint("endpoint1")
+        test_get_endpoint("endpoint2")
+        test_post_endpoint("endpoint3", {"key": "value"})
+
+
+        print("All tests passed successfully.")
+    except AssertionError as e:
+        print(f"Test failed: {e}")
+        exit(1)
+
+if __name__ == "__main__":
+    run_tests()
