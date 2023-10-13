@@ -1,46 +1,59 @@
 import requests
-import json
+import hashlib
 
-# URL of API
-base_url = "whatever our url is lmao"
+base_url = "our API url lol"
 
-#  function to make GET requests and test endpoints
-def test_get_endpoint(endpoint):
-    url = f"{base_url}/{endpoint}"
+# a function to test the /md5/<string> endpoint
+def test_md5_endpoint():
+    test_string = "Hello World"
+    expected_md5_hash = hashlib.md5(test_string.encode()).hexdigest()
+    url = f"{base_url}/md5/{test_string}"
     response = requests.get(url)
+    assert response.status_code == 200, "MD5 endpoint returned a non-200 status code"
+    assert response.text.strip() == expected_md5_hash, "MD5 hash does not match"
 
-    # check if ststus code = 200
-    assert response.status_code == 200, f"Failed to get {endpoint}"
+# a function to test the /factorial/<int> endpoint
+def test_factorial_endpoint():
+    test_int = 5
+    expected_factorial = 120
+    url = f"{base_url}/factorial/{test_int}"
+    response = requests.get(url)
+    assert response.status_code == 200, "Factorial endpoint returned a non-200 status code"
+    assert int(response.text) == expected_factorial, "Factorial calculation is incorrect"
 
-    try:
-        data = response.json()
-        # Add checks for the JSON data here
-    except json.JSONDecodeError:
-        pass
+# a function to test the /fibonacci/<int> endpoint
+def test_fibonacci_endpoint():
+    test_int = 8
+    expected_fibonacci_sequence = [0, 1, 1, 2, 3, 5, 8]
+    url = f"{base_url}/fibonacci/{test_int}"
+    response = requests.get(url)
+    assert response.status_code == 200, "Fibonacci endpoint returned a non-200 status code"
+    assert list(map(int, response.json())) == expected_fibonacci_sequence, "Fibonacci sequence is incorrect"
 
-#  function to make POST requests and test endpoints
-def test_post_endpoint(endpoint, data):
-    url = f"{base_url}/{endpoint}"
-    headers = {'Content-Type': 'application/json'}
-    response = requests.post(url, data=json.dumps(data), headers=headers)
+#  a function to test the /is-prime/<int> endpoint
+def test_is_prime_endpoint():
+    test_prime = 17
+    url = f"{base_url}/is-prime/{test_prime}"
+    response = requests.get(url)
+    assert response.status_code == 200, "Is-Prime endpoint returned a non-200 status code"
+    assert response.text == "true", "Is-Prime check is incorrect"
 
-    # check if the status code = 201 or 200
-    assert response.status_code in (201, 200), f"Failed to post to {endpoint}"
+#  a function to test the /slack-alert/<string> endpoint
+def test_slack_alert_endpoint():
+    test_message = "Test message"
+    url = f"{base_url}/slack-alert/{test_message}"
+    response = requests.get(url)
+    assert response.status_code == 200, "Slack-Alert endpoint returned a non-200 status code"
+    assert response.text == "true", "Slack alert failed to post"
 
-
-
-# a function to run all tests
+# run all test functions
 def run_tests():
-    try:
-        test_get_endpoint("endpoint1")
-        test_get_endpoint("endpoint2")
-        test_post_endpoint("endpoint3", {"key": "value"})
-
-
-        print("All tests passed successfully.")
-    except AssertionError as e:
-        print(f"Test failed: {e}")
-        exit(1)
+    test_md5_endpoint()
+    test_factorial_endpoint()
+    test_fibonacci_endpoint()
+    test_is_prime_endpoint()
+    test_slack_alert_endpoint()
+    print("All tests passed successfully.")
 
 if __name__ == "__main__":
     run_tests()
