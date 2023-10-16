@@ -1,7 +1,17 @@
+### Project 7 by Harley, Lauren, Linda, and Diego
+### this code will test our previous API
+
+
 import requests
 import hashlib
 
-base_url = "our API url lol"
+base_url = "http://127.0.0.1:4000"
+
+
+def log_comparison(expected, actual, message):
+    print(f"Expected: {expected}")
+    print(f"Actual: {actual}")
+    assert expected == actual, message
 
 # a function to test the /md5/<string> endpoint
 def test_md5_endpoint():
@@ -10,7 +20,11 @@ def test_md5_endpoint():
     url = f"{base_url}/md5/{test_string}"
     response = requests.get(url)
     assert response.status_code == 200, "MD5 endpoint returned a non-200 status code"
-    assert response.text.strip() == expected_md5_hash, "MD5 hash does not match"
+
+    response_data = response.json()  # Parse the JSON response
+    actual_md5_hash = response_data["output"]
+
+    log_comparison(expected_md5_hash, actual_md5_hash, "MD5 hash does not match")
 
 # a function to test the /factorial/<int> endpoint
 def test_factorial_endpoint():
@@ -19,7 +33,11 @@ def test_factorial_endpoint():
     url = f"{base_url}/factorial/{test_int}"
     response = requests.get(url)
     assert response.status_code == 200, "Factorial endpoint returned a non-200 status code"
-    assert int(response.text) == expected_factorial, "Factorial calculation is incorrect"
+
+    response_data = response.json()  # Parse the JSON response
+    actual_factorial = response_data["output"]
+
+    log_comparison(expected_factorial, actual_factorial, "Factorial calculation is incorrect")
 
 # a function to test the /fibonacci/<int> endpoint
 def test_fibonacci_endpoint():
@@ -28,7 +46,11 @@ def test_fibonacci_endpoint():
     url = f"{base_url}/fibonacci/{test_int}"
     response = requests.get(url)
     assert response.status_code == 200, "Fibonacci endpoint returned a non-200 status code"
-    assert list(map(int, response.json())) == expected_fibonacci_sequence, "Fibonacci sequence is incorrect"
+
+    response_data = response.json()  # Parse the JSON response
+    actual_fibonacci_sequence = response_data["output"]
+
+    log_comparison(expected_fibonacci_sequence, actual_fibonacci_sequence, "Fibonacci sequence is incorrect")
 
 #  a function to test the /is-prime/<int> endpoint
 def test_is_prime_endpoint():
@@ -36,7 +58,9 @@ def test_is_prime_endpoint():
     url = f"{base_url}/is-prime/{test_prime}"
     response = requests.get(url)
     assert response.status_code == 200, "Is-Prime endpoint returned a non-200 status code"
-    assert response.text == "true", "Is-Prime check is incorrect"
+
+    actual_result = response.json()["output"].lower()  # Convert to lowercase
+    log_comparison("true", actual_result, "Is-Prime check is incorrect")
 
 #  a function to test the /slack-alert/<string> endpoint
 def test_slack_alert_endpoint():
@@ -44,7 +68,9 @@ def test_slack_alert_endpoint():
     url = f"{base_url}/slack-alert/{test_message}"
     response = requests.get(url)
     assert response.status_code == 200, "Slack-Alert endpoint returned a non-200 status code"
-    assert response.text == "true", "Slack alert failed to post"
+
+    actual_result = response.json()["output"].lower()  # Convert to lowercase
+    log_comparison("true", actual_result, "Slack alert failed to post")
 
 # run all test functions
 def run_tests():
@@ -53,7 +79,7 @@ def run_tests():
     test_fibonacci_endpoint()
     test_is_prime_endpoint()
     test_slack_alert_endpoint()
-    print("All tests passed successfully.")
+    print("All tests passed successfully")
 
 if __name__ == "__main__":
     run_tests()
