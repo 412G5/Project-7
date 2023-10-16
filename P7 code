@@ -18,8 +18,8 @@ def log_comparison(expected, actual, message):
 def test_md5_endpoint():
     test_cases = [
         ("Hello World", "b10a8db164e0754105b7a99be72e3fe5"),
-        ("", "d41d8cd98f00b204e9800998ecf8427e"),
-        ("Test String", "532eaabd9574880dbf76b9b8cc00832c"),
+        ("%20", "7215ee9c7d9dc229d2921a40e899ec5f"),
+        ("Test String", "bd08ba3c982eaad768602536fb8e1184"),
     ]
 
     for test_string, expected_md5_hash in test_cases:
@@ -68,7 +68,7 @@ def test_factorial_endpoint():
 # a function to test the /fibonacci/<int> endpoint
 def test_fibonacci_endpoint():
     test_cases = [
-        (8, [0, 1, 1, 2, 3, 5, 8]),
+        (8, [0, 1, 1, 2, 3, 5, 8, 13]),
         (12, [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]),
         (0, [0]),
         (-5, "Invalid input. (not a list of integers)"),  
