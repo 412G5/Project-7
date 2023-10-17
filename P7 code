@@ -82,12 +82,12 @@ def test_fibonacci_endpoint():
 
         response_data = response.json()
         if "error" in response_data:
-            actual_fibonacci_sequence = "Invalid input"
+            actual_fibonacci_sequence = "Invalid input."
         else:
             actual_fibonacci_sequence = response_data.get("output")
 
-        if actual_fibonacci_sequence == "Invalid input":
-            print(f"Fibonacci test failed for input: {test_int}, expected: 'Invalid input'")
+        if actual_fibonacci_sequence == "Invalid input.":
+            print(f"Fibonacci test failed for input: {test_int}, expected: 'Invalid input.'")
         else:
             try:
                 actual_fibonacci_sequence = list(map(int, actual_fibonacci_sequence))
@@ -96,7 +96,7 @@ def test_fibonacci_endpoint():
                 else:
                     print(f"Fibonacci test passed for input: {test_int}")
             except ValueError:
-                print(f"Fibonacci test failed for input: {test_int}, expected: {expected_fibonacci_sequence}, actual: {actual_fibonacci_sequence} (not a list of integers)")
+                print(f"Fibonacci test failed for input: {test_int}, expected: {expected_fibonacci_sequence}, actual: {actual_fibonacci_sequence}")
 
 
 # a function to test the /is-prime/<int> endpoint
