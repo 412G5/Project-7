@@ -34,10 +34,10 @@ def test_md5_endpoint():
 
         if actual_md5_hash == expected_md5_hash:
             #print(f"MD5 test passed for input: {test_string}")
-            print(f"0")
+            print(f"MD5 test case for {test_string}: 0")
         else:
             #print(f"MD5 test failed for input: {test_string}")
-            print(f"1")
+            print(f"MD5 test case for {test_string}: 1")
             log_comparison(expected_md5_hash, actual_md5_hash, "MD5 hash does not match")
 
 
@@ -61,13 +61,13 @@ def test_factorial_endpoint():
 
         if actual_factorial == "Invalid input":
             #print(f"Factorial test failed for input: {test_int}, expected: 'Invalid input'")
-            print(f"1")
+            print(f"Factorial test case for {test_string}: 1")
         elif actual_factorial != expected_factorial:
             print(f"Factorial test failed for input: {test_int}, expected: {expected_factorial}, actual: {actual_factorial}")
-            print(f"1")
+            print(f"Factorial test case for {test_string}: 1")
         else:
             #print(f"Factorial test passed for input: {test_int}")
-            print(f"0")
+            print(f"Factorial test case for {test_string}: 0")
 
 
 # a function to test the /fibonacci/<int> endpoint
@@ -93,19 +93,19 @@ def test_fibonacci_endpoint():
 
         if actual_fibonacci_sequence == "Invalid input.":
             #print(f"Fibonacci test failed for input: {test_int}, expected: 'Invalid input.'")
-            print(f"1")
+            print(f"Fibonacci test case for {test_string}: 1")
         else:
             try:
                 actual_fibonacci_sequence = list(map(int, actual_fibonacci_sequence))
                 if actual_fibonacci_sequence != expected_fibonacci_sequence:
                     #print(f"Fibonacci test failed for input: {test_int}, expected: {expected_fibonacci_sequence}, actual: {actual_fibonacci_sequence}")
-                    print(f"1")
+                    print(f"Fibonacci test case for {test_string}: 1")
                 else:
                     #print(f"Fibonacci test passed for input: {test_int}")
-                    print(f"0")
+                    print(f"Fibonacci test case for {test_string}: 0")
             except ValueError:
                 #print(f"Fibonacci test failed for input: {test_int}, expected: {expected_fibonacci_sequence}, actual: {actual_fibonacci_sequence}")
-                print(f"1")
+                print(f"Fibonacci test case for {test_string}: 1")
 
 
 # a function to test the /is-prime/<int> endpoint
@@ -128,10 +128,10 @@ def test_is_prime_endpoint():
 
         if actual_result != expected_result:
             #print(f"Is-Prime test failed for input: {test_prime}, expected: {expected_result}, actual: {actual_result}")
-            print(f"1")
+            print(f"Prime test case for {test_string}: 1")
         else:
             #print(f"Is-Prime test passed for input: {test_prime}")
-            print(f"0")
+            print(f"Prime test case for {test_string}: 0")
 
 
 #  a function to test the /slack-alert/<string> endpoint
@@ -143,6 +143,7 @@ def test_slack_alert_endpoint():
 
     actual_result = response.json()["output"].lower()  # convert to lowercase
     log_comparison("true", actual_result, "Slack alert failed to post")
+    
 
 # run all test functions
 def run_tests():
