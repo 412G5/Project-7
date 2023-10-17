@@ -71,8 +71,8 @@ def test_fibonacci_endpoint():
         (8, [0, 1, 1, 2, 3, 5, 8, 13]),
         (12, [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]),
         (0, [0]),
-        (-5, "Invalid input. (not a list of integers)"),  
-        ("xyz", "Invalid input. (not a list of integers)"),  
+        (-5, "Invalid input."),  
+        ("xyz", "Invalid input."),  
     ]
 
     for test_int, expected_fibonacci_sequence in test_cases:
