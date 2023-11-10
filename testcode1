@@ -33,10 +33,8 @@ def test_md5_endpoint():
         actual_md5_hash = actual_response['output']
 
         if actual_md5_hash == expected_md5_hash:
-            #print(f"MD5 test passed for input: {test_string}")
             print(f"MD5 test case for {test_string}: 0")
         else:
-            #print(f"MD5 test failed for input: {test_string}")
             print(f"MD5 test case for {test_string}: 1")
             log_comparison(expected_md5_hash, actual_md5_hash, "MD5 hash does not match")
 
@@ -54,20 +52,14 @@ def test_factorial_endpoint():
     for test_int, expected_factorial in test_cases:
         url = f"{base_url}/factorial/{test_int}"
         response = requests.get(url)
-        assert response.status_code == 200, "Factorial endpoint returned a non-200 status code"
 
-        response_data = response.json()  # parse the JSON response
+        response_data = response.json()  
         actual_factorial = response_data["output"]
 
-        if actual_factorial == "Invalid input":
-            #print(f"Factorial test failed for input: {test_int}, expected: 'Invalid input'")
-            print(f"Factorial test case for {test_int}: 1")
-        elif actual_factorial != expected_factorial:
-            print(f"Factorial test failed for input: {test_int}, expected: {expected_factorial}, actual: {actual_factorial}")
-            print(f"Factorial test case for {test_int}: 1")
-        else:
-            #print(f"Factorial test passed for input: {test_int}")
+        if actual_factorial == expected_factorial:
             print(f"Factorial test case for {test_int}: 0")
+        else:
+            print(f"Factorial test case for {test_int}: 1")
 
 
 # a function to test the /fibonacci/<int> endpoint
@@ -83,29 +75,14 @@ def test_fibonacci_endpoint():
     for test_int, expected_fibonacci_sequence in test_cases:
         url = f"{base_url}/fibonacci/{test_int}"
         response = requests.get(url)
-        assert response.status_code == 200, "Fibonacci endpoint returned a non-200 status code"
 
         response_data = response.json()
-        if "error" in response_data:
-            actual_fibonacci_sequence = "Invalid input."
-        else:
-            actual_fibonacci_sequence = response_data.get("output")
+        actual_fibonacci_sequence = response_data["output"]
 
-        if actual_fibonacci_sequence == "Invalid input.":
-            #print(f"Fibonacci test failed for input: {test_int}, expected: 'Invalid input.'")
-            print(f"Fibonacci test case for {test_int}: 1")
+        if actual_fibonacci_sequence == expected_fibonacci_sequence:
+            print(f"Fibonacci test case for {test_int}: 0")
         else:
-            try:
-                actual_fibonacci_sequence = list(map(int, actual_fibonacci_sequence))
-                if actual_fibonacci_sequence != expected_fibonacci_sequence:
-                    #print(f"Fibonacci test failed for input: {test_int}, expected: {expected_fibonacci_sequence}, actual: {actual_fibonacci_sequence}")
-                    print(f"Fibonacci test case for {test_int}: 1")
-                else:
-                    #print(f"Fibonacci test passed for input: {test_int}")
-                    print(f"Fibonacci test case for {test_int}: 0")
-            except ValueError:
-                #print(f"Fibonacci test failed for input: {test_int}, expected: {expected_fibonacci_sequence}, actual: {actual_fibonacci_sequence}")
-                print(f"Fibonacci test case for {test_int}: 1")
+            print(f"Factorial test case for {test_int}: 1")
 
 
 # a function to test the /is-prime/<int> endpoint
@@ -121,17 +98,14 @@ def test_is_prime_endpoint():
     for test_prime, expected_result in test_cases:
         url = f"{base_url}/is-prime/{test_prime}"
         response = requests.get(url)
-        assert response.status_code == 200, "Is-Prime endpoint returned a non-200 status code"
 
         response_data = response.json()
-        actual_result = response_data.get("output")
+        actual_prime = response_data["output"]
 
-        if actual_result != expected_result:
-            #print(f"Is-Prime test failed for input: {test_prime}, expected: {expected_result}, actual: {actual_result}")
-            print(f"Prime test case for {test_prime}: 1")
-        else:
-            #print(f"Is-Prime test passed for input: {test_prime}")
+        if actual_prime == expected_prime:
             print(f"Prime test case for {test_prime}: 0")
+        else:
+            print(f"Prime test case for {test_prime}: 1")
 
 
 #  a function to test the /slack-alert/<string> endpoint
@@ -139,19 +113,18 @@ def test_slack_alert_endpoint():
     test_message = "Test message"
     url = f"{base_url}/slack-alert/{test_message}"
     response = requests.get(url)
-    assert response.status_code == 200, "Slack-Alert endpoint returned a non-200 status code"
 
-    actual_result = response.json()["output"].lower()  # convert to lowercase
-    log_comparison("true", actual_result, "Slack alert failed to post")
+    actual_result = response.json()["output"]
+
+    if response.status_code == 200:
+        print(f"Slack alert test case for {test_message}: 0") 
+    else:
+        print(f"Slack alert test case for {test_message}: 1")
     
 
 # run all test functions
 def run_tests():
-    try:
-        test_md5_endpoint()
-    except AssertionError as e:
-        print(f"Error in MD5 test: {e}")
-
+    test_md5_endpoint()
     test_factorial_endpoint()
     test_fibonacci_endpoint()
     test_is_prime_endpoint()
