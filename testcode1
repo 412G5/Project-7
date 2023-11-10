@@ -95,7 +95,7 @@ def test_is_prime_endpoint():
         ("abc", "Invalid input."),  
     ]
 
-    for test_prime, expected_result in test_cases:
+    for test_prime, expected_prime in test_cases:
         url = f"{base_url}/is-prime/{test_prime}"
         response = requests.get(url)
 
